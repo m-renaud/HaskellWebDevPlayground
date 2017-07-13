@@ -9,7 +9,9 @@ import Network.Wai.Handler.Warp
 import Servant
 
 import Api
-import Model
+import Model.User
+import Model.UserToHtml
+import Model.UserToJson
 
 
 -- HANDLERS

@@ -13,11 +13,11 @@ module Api
 import Data.Aeson
 import Data.Aeson.TH
 import Data.ByteString (ByteString)
+import Lucid (Html, ToHtml, toHtml, renderBS)
 import Network.HTTP.Media ((//), (/:))
-import Lucid
 import Servant
 
-import Model (User(..))
+import Model.User (User)
 
 data HTML
 
@@ -29,26 +29,6 @@ instance ToHtml a => MimeRender HTML a where
 
 instance MimeRender HTML (Html a) where
     mimeRender _ = renderBS
-
-
-instance ToHtml User where
-    toHtml user =
-        tr_ $ do
-            td_ (toHtml . show $ userId user)
-            td_ (toHtml $ userFirstName user)
-            td_ (toHtml $ userLastName user)
-    toHtmlRaw = toHtml
-
-
-instance ToHtml [User] where
-    toHtml users =
-        table_ $ do
-            tr_ $ do
-                th_ "id"
-                th_ "first name"
-                th_ "last name"
-            foldMap toHtml users
-    toHtmlRaw = toHtml
 
 
 type UserApi
@@ -68,6 +48,7 @@ type UserApi
       :> "listall"
       :> Get '[JSON, HTML] [User]
 
+
 data SortBy
     = Id
     | FirstName
@@ -75,6 +56,7 @@ data SortBy
     deriving (Eq, Show)
 
 $(deriveJSON defaultOptions ''SortBy)
+
 
 instance FromHttpApiData SortBy where
     parseQueryParam "id" = Right Id
