@@ -10,7 +10,7 @@ associated instance in scope within Lib.hs. The corresponding instances are:
 
     ContentType     Instance
     --------------------------
-    HTML            Lucid.ToHtml
+    Servant.HTML    Lucid.ToHtml
     Servart.JSON    Data.Aeson.ToJSON (usually done with deriveJSON TH)
 
 To add a new content type:
@@ -19,23 +19,9 @@ To add a new content type:
      typeclasses
 -}
 module ContentTypes
-    ( HTML
+    ( Servant.HTML.Lucid.HTML
     , Servant.JSON
     ) where
 
-import Lucid (Html, ToHtml(..), toHtml, renderBS)
-import Network.HTTP.Media ((//), (/:))
-import Servant (Accept(..), MimeRender(..))
+import qualified Servant.HTML.Lucid
 import qualified Servant
-
-
-data HTML
-
-instance Accept HTML where
-    contentType _ = "text" // "html" /: ("charset", "utf-8")
-
-instance ToHtml a => MimeRender HTML a where
-    mimeRender _ = renderBS . toHtml
-
-instance MimeRender HTML (Html a) where
-    mimeRender _ = renderBS
