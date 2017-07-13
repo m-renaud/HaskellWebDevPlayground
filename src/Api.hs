@@ -1,6 +1,4 @@
 {-# LANGUAGE DataKinds #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeOperators #-}
@@ -10,43 +8,33 @@ module Api
     , SortBy(..)
     , api) where
 
-import Data.Aeson
 import Data.Aeson.TH
-import Data.ByteString (ByteString)
-import Lucid (Html, ToHtml, toHtml, renderBS)
 import Network.HTTP.Media ((//), (/:))
 import Servant
 
+import ContentTypes (HTML, JSON)
 import Model.User (User)
-
-data HTML
-
-instance Accept HTML where
-    contentType _ = "text" // "html" /: ("charset", "utf-8")
-
-instance ToHtml a => MimeRender HTML a where
-    mimeRender _ = renderBS . toHtml
-
-instance MimeRender HTML (Html a) where
-    mimeRender _ = renderBS
-
 
 type UserApi
     = "user"
       :> QueryParam "sortby" SortBy
       :> Get '[JSON, HTML] [User]
+      -- ^ /user[?sortby=(id|firstname|lastname)]
 
     :<|>
 
       "user"
       :> Capture "userId" Integer
       :> Get '[JSON, HTML] User
+      -- ^ /user/<Integer>
 
     :<|>
 
       "user"
       :> "listall"
       :> Get '[JSON, HTML] [User]
+      -- ^ /user/listall
+      -- Equivalent to /user
 
 
 data SortBy
