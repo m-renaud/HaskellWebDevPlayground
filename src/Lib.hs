@@ -9,6 +9,7 @@ import Network.Wai.Handler.Warp
 import Servant
 
 import Api
+import Api.UserApi (SortBy(..))
 import Model.User
 import Model.UserToHtml
 import Model.UserToJson
