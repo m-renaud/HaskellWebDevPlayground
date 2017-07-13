@@ -1,20 +1,25 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeOperators #-}
 
 module Api
-    ( UserApi
+    ( Api
+    , UserApi
     , SortBy(..)
     , api) where
 
-import Data.Aeson.TH
 import Network.HTTP.Media ((//), (/:))
 import Servant
 
 import ContentTypes (HTML, JSON)
 import Model.User (User)
 
+type Api
+    = UserApi
+    :<|> HealthzApi
+
+
+-- | API for accessing user information.
 type UserApi
     = "user"
       :> QueryParam "sortby" SortBy
@@ -43,8 +48,6 @@ data SortBy
     | LastName
     deriving (Eq, Show)
 
-$(deriveJSON defaultOptions ''SortBy)
-
 
 instance FromHttpApiData SortBy where
     parseQueryParam "id" = Right Id
@@ -53,6 +56,13 @@ instance FromHttpApiData SortBy where
     parseQueryParam _ = Left "Invalid sortby parameter"
 
 
+-- | API for viewing the health of the server.
+type HealthzApi
+     = "healthz"
+       :> Get '[JSON, HTML] String
 
-api :: Proxy UserApi
+
+
+
+api :: Proxy Api
 api = Proxy

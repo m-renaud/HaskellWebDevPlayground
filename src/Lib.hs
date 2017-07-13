@@ -51,14 +51,28 @@ users =
     ]
 
 
+getHealthz :: Handler String
+getHealthz =
+    return "OK"
+
+
 -- APP
 
 
-server :: Server UserApi
-server =
+usersApiHandlers =
     getUsers :<|>
     getUserById :<|>
     getAllUsers
+
+
+healthzHandlers =
+    getHealthz
+
+
+server :: Server Api
+server =
+    usersApiHandlers :<|>
+    healthzHandlers
 
 
 startApp :: IO ()
