@@ -1,3 +1,4 @@
 dist
 .stack-work
 TAGS
+.dir-locals.el
