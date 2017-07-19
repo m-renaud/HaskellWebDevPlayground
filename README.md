@@ -7,7 +7,7 @@ Experimenting with web dev using Haskell libraries.
 This project is build using [Stack](https://www.haskellstack.org/).
 
     git clone https://github.com/m-renaud/HaskellWebDevPlayground.git
-	cd HaskellWebDevPlayground
+	cd HaskellWebDevPlayground/backend
 	stack setup
     stack build
 	stack exec server
