@@ -18,8 +18,8 @@ import Model.UserToJson
 -- HANDLERS
 
 
-getUsers :: Maybe SortBy -> Handler [User]
-getUsers maybeSortBy =
+getUsers :: [User] -> Maybe SortBy -> Handler [User]
+getUsers users maybeSortBy =
     let
         sortUsers :: SortBy -> [User]
         sortUsers sortBy =
@@ -35,17 +35,17 @@ getUsers maybeSortBy =
 
 
 
-getUserById :: Integer -> Handler User
-getUserById id =
+getUserById :: [User] -> Integer -> Handler User
+getUserById users id =
     return (users !! fromIntegral (id - 1))
 
 
-getAllUsers :: Handler [User]
+getAllUsers :: [User] -> Handler [User]
 getAllUsers =
-    return users
+    return
 
-users :: [User]
-users =
+usersDb :: [User]
+usersDb =
     [ User 1 "Matt" "Renaud"
     , User 2 "Tom" "Law"
     , User 3 "Evan" "Jones"
@@ -61,9 +61,9 @@ getHealthz =
 
 
 usersApiHandlers =
-    getUsers :<|>
-    getUserById :<|>
-    getAllUsers
+    getUsers usersDb :<|>
+    getUserById usersDb :<|>
+    getAllUsers usersDb
 
 
 healthzHandlers =
