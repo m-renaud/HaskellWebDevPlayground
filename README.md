@@ -12,8 +12,7 @@ This project is build using [Stack](https://www.haskellstack.org/).
     stack build
 	stack exec server
 
-You can then navigate to http://localhost:8081/user and see a table with some
-names in it.
+You can then navigate to http://localhost:8081/healthz and see "OK".
 
 ## Libraries in use
 
