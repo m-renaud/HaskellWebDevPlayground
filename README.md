@@ -10,7 +10,7 @@ This project is build using [Stack](https://www.haskellstack.org/).
 	cd HaskellWebDevPlayground
 	stack setup
     stack build
-	stack exec HaskellWebDevPlayground-exe
+	stack exec server
 
 You can then navigate to http://localhost:8081/user and see a table with some
 names in it.
